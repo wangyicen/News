@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_centerVertical="true"
+    android:padding="5dp"
+    android:descendantFocusability="blocksDescendants">
+
+    <ImageView
+        android:id="@+id/item_list_news_iv"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/cccc"/>
+
+    <TextView
+        android:id="@+id/item_list_news_tv1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/item_list_news_iv"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="10dp"
+        android:textSize="25dp"
+        android:textStyle="bold"
+        android:text="新闻标题"/>
+    <TextView
+        android:id="@+id/item_list_news_tv2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/item_list_news_iv"
+        android:layout_alignBottom="@id/item_list_news_iv"
+        android:layout_marginLeft="5dp"
+        android:layout_marginBottom="5dp"
+        android:textSize="20dp"
+        android:text="新闻主要内容摘要"/>
+
+
+</RelativeLayout>
