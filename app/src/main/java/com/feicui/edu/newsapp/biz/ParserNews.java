@@ -2,13 +2,18 @@ package com.feicui.edu.newsapp.biz;
 
 import android.util.Log;
 
+import com.feicui.edu.newsapp.entity.BaseEntity;
 import com.feicui.edu.newsapp.entity.News;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Administrator on 2016/10/24 0024.
@@ -48,6 +53,12 @@ public class ParserNews {
     }
 
 //    使用高端的gson框架解析
+    public static BaseEntity parserNewsWithGson(String json){
+        Gson gson = new Gson();
+        Type type = new TypeToken<BaseEntity>(){}.getType();
+        BaseEntity baseEntity = gson.fromJson(json,type);
+        return baseEntity;
+    }
 
 
 

@@ -20,9 +20,11 @@ import com.feicui.edu.newsapp.base.utils.ActivityUtils;
 import com.feicui.edu.newsapp.base.utils.NetUtils;
 import com.feicui.edu.newsapp.biz.ParserNews;
 import com.feicui.edu.newsapp.db.DBHelper;
+import com.feicui.edu.newsapp.entity.BaseEntity;
 import com.feicui.edu.newsapp.entity.News;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends BaseActivity {
 
@@ -123,7 +125,10 @@ public class MainActivity extends BaseActivity {
                         "news_list?ver="+ NetUtils.VERSION +
                         "&subid=1&dir=1&nid=1id&stamp=20140321&cnt=20");
                 //解析json数据
-                datas = ParserNews.parserNews(json);
+//                datas = ParserNews.parserNews(json);
+                BaseEntity baseEntity = ParserNews.parserNewsWithGson(json);
+                datas = (ArrayList<News>) baseEntity.getData();
+
                 //发送消息给Handler
                 handler.sendEmptyMessage(0);
             }
