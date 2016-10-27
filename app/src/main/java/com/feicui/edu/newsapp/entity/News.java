@@ -1,11 +1,13 @@
 package com.feicui.edu.newsapp.entity;
 
+import java.io.Serializable;
+
 /**
  * Created by Administrator on 2016/10/24 0024.
  * 新闻数据解析处理
  * subId,stamp,icon,title,summary,link
  */
-public class News {
+public class News implements Serializable {
     private int type;
     private int nid;
     private String stamp;

@@ -21,6 +21,11 @@ public class NewsListAdapter extends MyBaseAdapter<News> implements ImageLoader.
 
     private ImageLoader imageLoader;
     private ListView listView;
+    private boolean state;
+
+    public void setState(boolean state) {
+        this.state = state;
+    }
 
     public NewsListAdapter(Context context){
         super(context);
@@ -56,9 +61,14 @@ public class NewsListAdapter extends MyBaseAdapter<News> implements ImageLoader.
 //        vh.imageView.setImageResource(R.drawable.cccc);
 //        缓存获取图片地址
         Bitmap bitmap = imageLoader.getBitmap(imgUrl, context);
-        if (bitmap != null){
-            vh.imageView.setImageBitmap(bitmap);
+        if (!state){
+            if (bitmap != null){
+                vh.imageView.setImageBitmap(bitmap);
+            }
+        }else {
+            vh.imageView.setImageResource(R.drawable.cccc);
         }
+
         vh.textView1.setText(news.getTitle());
         vh.textView2.setText(news.getSummary());
         return convertView;

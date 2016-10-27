@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
  */
 public class ParserNews {
+//    使用原始的json解析方法
     public static ArrayList<News> parserNews(String json){
         ArrayList<News> datas = new ArrayList<News>();
         try {
@@ -45,5 +46,9 @@ public class ParserNews {
 
         return datas;
     }
+
+//    使用高端的gson框架解析
+
+
 
 }

@@ -27,7 +27,7 @@ public class AysnProgressActivity extends AppCompatActivity {
 
     private ProgressBar progressBar;
     private TextView textView;
-    private static final String IMG_URL = "http://image.baidu.com/search/detail?ct=503316480&z=0&ipn=d&word=%E7%BD%97%E5%BF%97%E7%A5%A5&step_word=&hs=0&pn=1&spn=0&di=269806109570&pi=0&rn=1&tn=baiduimagedetail&is=0%2C0&istype=2&ie=utf-8&oe=utf-8&in=&cl=2&lm=-1&st=-1&cs=4142256668%2C2012929949&os=2456556667%2C3885637048&simid=0%2C0&adpicid=0&ln=3928&fr=&fmq=1477464973228_R&fm=index&ic=undefined&s=undefined&se=&sme=&tab=0&width=&height=&face=undefined&ist=&jit=&cg=star&bdtype=11&oriquery=&objurl=http%3A%2F%2Fdy.imgs.duominuo.com%2Fnews%2Fe4%2Ff5%2Fe4f57a271c4c478c11580c395f3f568b.jpg&fromurl=ippr_z2C%24qAzdH3FAzdH3Fooo_z%26e3B4wg2275_z%26e3Bv54AzdH3Fgjofccdc0c_z%26e3Bip4s&gsm=0&rpstart=0&rpnum=0";
+    private static final String IMG_URL = "http://www.ivsky.com/tupian/bingqilin_v37942/pic_615445.html#al_tit";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

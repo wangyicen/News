@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
@@ -58,10 +59,18 @@ public class ActivityUtils {
         }
     }
 
-    public void startActivity(Class<? extends Activity> clazz){
+    public void startActivity(Activity act, Class<? extends Activity> clazz){
         Activity activity = getActivity();
         if (activity == null) return;
         Intent intent = new Intent(activity, clazz);
+        activity.startActivity(intent);
+    }
+
+    public void startActivityWithBundle(Activity act, Class<? extends Activity> clazz, Bundle bundle){
+        Activity activity = getActivity();
+        if (activity == null) return;
+        Intent intent = new Intent(activity, clazz);
+        intent.putExtra("bundle", bundle);
         activity.startActivity(intent);
     }
 

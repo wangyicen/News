@@ -9,11 +9,14 @@ import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.feicui.edu.newsapp.NewsAppApplication;
 import com.feicui.edu.newsapp.R;
 import com.feicui.edu.newsapp.adapter.NewsListAdapter;
 import com.feicui.edu.newsapp.base.activity.BaseActivity;
+import com.feicui.edu.newsapp.base.utils.ActivityUtils;
 import com.feicui.edu.newsapp.base.utils.NetUtils;
 import com.feicui.edu.newsapp.biz.ParserNews;
 import com.feicui.edu.newsapp.db.DBHelper;
@@ -28,6 +31,7 @@ public class MainActivity extends BaseActivity {
     private NewsListAdapter adapter;
     private DBHelper helper;
     private ProgressDialog dialog;
+    private ActivityUtils activityUtils;
     //分页加载时需要记录的条目数
     private int startId;
     private int count = 9;
@@ -131,18 +135,48 @@ public class MainActivity extends BaseActivity {
         listView = (ListView) findViewById(R.id.news_list_lv);
         adapter = new NewsListAdapter(this);
         helper = new DBHelper(this);
+        activityUtils = new ActivityUtils(this);
         adapter.setListView(listView);
         listView.setAdapter(adapter);
 
     }
-
-
     @Override
     protected void setListener() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                /*News news = adapter.getItem(position);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("news", news);
+                activityUtils.startActivityWithBundle(MainActivity.this, NewsWebActivity.class, bundle);
+           */
+                NewsAppApplication application = (NewsAppApplication) getApplication();
+                News news = adapter.getItem(position);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("news", news);
+                application.addData("bundle", bundle);
+                activityUtils.startActivity(MainActivity.this, NewsWebActivity.class);
+
+            }
+        });
+
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            //设置滚动的监听
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
-
+                switch (scrollState){
+                    //不滑动时，下载图片，并显示
+                    case SCROLL_STATE_IDLE:
+                        adapter.setState(false);
+                        break;
+                    //滑动时，显示本地图片，等停止滑动，显示下载图片
+                    case SCROLL_STATE_FLING:
+                    case SCROLL_STATE_TOUCH_SCROLL:
+                        adapter.setState(true);
+                        break;
+                }
+                //更新适配器，如果不更新状态，则不显示新闻下载后的图片
+                adapter.notifyDataSetChanged();
             }
 
             //当滚动时调用
