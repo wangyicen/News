@@ -3,17 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".activity.NewsListActivity">
+    tools:context="com.feicui.edu.newsapp.activity.MainActivity">
 
     <include
-        layout="@layout/title_bar"/>
+        layout="@layout/activity_main_title"/>
 
-    <ListView
-        android:id="@+id/news_list_lv"
+    <RelativeLayout
+        android:id="@+id/layout_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:cacheColorHint="@color/transparent"></ListView>
+        android:layout_height="match_parent">
 
+    </RelativeLayout>
 
 </LinearLayout>
