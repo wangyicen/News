@@ -4,8 +4,12 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -13,7 +17,6 @@ import android.widget.ListView;
 import com.feicui.edu.newsapp.NewsAppApplication;
 import com.feicui.edu.newsapp.R;
 import com.feicui.edu.newsapp.adapter.NewsListAdapter;
-import com.feicui.edu.newsapp.base.activity.BaseActivity;
 import com.feicui.edu.newsapp.base.utils.ActivityUtils;
 import com.feicui.edu.newsapp.base.utils.NetUtils;
 import com.feicui.edu.newsapp.biz.ParserNews;
@@ -23,8 +26,10 @@ import com.feicui.edu.newsapp.entity.News;
 
 import java.util.ArrayList;
 
-public class NewsListActivity extends BaseActivity {
-
+/**
+ * Created by Administrator on 2016/11/1 0001.
+ */
+public class FragmentNewsList extends Fragment {
     private ArrayList<News> datas;
     private ListView listView;
     private NewsListAdapter adapter;
@@ -47,22 +52,30 @@ public class NewsListActivity extends BaseActivity {
             dialog.dismiss();
         }
     };
-
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_newslist, null);
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_newslist);
-        initView();
-        setListener();
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        listView = (ListView) view.findViewById(R.id.news_list_lv);
+        adapter = new NewsListAdapter(getActivity());
+        helper = new DBHelper(getActivity());
+        activityUtils = new ActivityUtils(this);
+        adapter.setListView(listView);
+        listView.setAdapter(adapter);
         //判断数据库中是否存在本地缓存文件
-        if (helper.quaryNewsCount()){
+        if (helper.quaryNewsCount()) {
             quaryFromDB(startId);
-        }else {
+        } else {
             downloadNews();
 
         }
-
+    }
 //        new Thread(){
 //            @Override
 //            public void run() {
@@ -100,19 +113,16 @@ public class NewsListActivity extends BaseActivity {
 //            }
 //        }.start();
 
-        /*获取新闻数据DefaultHttpClient和HttpGet*/
-
-    }
-
     private void quaryFromDB(int startId) {
         datas = helper.quaryAllNewsWithLimit(startId, count);
         Log.i("quaryFromDB", datas.toString());
         adapter.addDatas(datas, false);
         adapter.notifyDataSetChanged();
     }
+
     private void downloadNews() {
         //先显示进度条
-        dialog = ProgressDialog.show(this, null, "不要着急，请稍后...");
+        dialog = ProgressDialog.show(getActivity(), null, "不要着急，请稍后...");
         new Thread(){
             @Override
             public void run() {
@@ -130,34 +140,23 @@ public class NewsListActivity extends BaseActivity {
                 handler.sendEmptyMessage(0);
             }
         }.start();
-    }
 
-    @Override
-    protected void initView() {
-        listView = (ListView) findViewById(R.id.news_list_lv);
-        adapter = new NewsListAdapter(this);
-        helper = new DBHelper(this);
-        activityUtils = new ActivityUtils(this);
-        adapter.setListView(listView);
-        listView.setAdapter(adapter);
 
-    }
-    @Override
-    protected void setListener() {
+        /*获取新闻数据DefaultHttpClient和HttpGet*/
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 /*News news = adapter.getItem(position);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("news", news);
-                activityUtils.startActivityWithBundle(NewsListActivity.this, NewsWebActivity.class, bundle);
+                activityUtils.startActivityWithBundle(NewsList.this, NewsWebActivity.class, bundle);
            */
-                NewsAppApplication application = (NewsAppApplication) getApplication();
+                NewsAppApplication application = (NewsAppApplication) getActivity().getApplication();
                 News news = adapter.getItem(position);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("news", news);
                 application.addData("bundle", bundle);
-                activityUtils.startActivity(NewsListActivity.this, NewsWebActivity.class);
+                activityUtils.startActivity(getActivity(), NewsWebActivity.class);
 
             }
         });
@@ -166,7 +165,7 @@ public class NewsListActivity extends BaseActivity {
             //设置滚动的监听
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
-                switch (scrollState){
+                switch (scrollState) {
                     //不滑动时，下载图片，并显示
                     case SCROLL_STATE_IDLE:
                         adapter.setState(false);
@@ -180,7 +179,6 @@ public class NewsListActivity extends BaseActivity {
                 //更新适配器，如果不更新状态，则不显示新闻下载后的图片
                 adapter.notifyDataSetChanged();
             }
-
             //当滚动时调用
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
@@ -196,6 +194,7 @@ public class NewsListActivity extends BaseActivity {
             }
         });
 
-
     }
+
+
 }

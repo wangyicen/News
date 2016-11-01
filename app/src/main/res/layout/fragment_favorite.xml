@@ -4,16 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activity.NewsListActivity">
-
-    <include
-        layout="@layout/title_bar"/>
+    tools:context=".activity.FragmentNewsList">
 
     <ListView
-        android:id="@+id/news_list_lv"
+        android:id="@+id/favorite_lv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:cacheColorHint="@color/transparent"></ListView>
+        android:cacheColorHint="@color/transparent">
+
+    </ListView>
 
 
 </LinearLayout>
