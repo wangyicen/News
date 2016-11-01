@@ -28,6 +28,8 @@ import android.widget.Scroller;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnClosedListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenedListener;
+
+import static java.lang.StrictMath.sin;
 //import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
 //import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
 
@@ -300,7 +302,7 @@ public class CustomViewAbove extends ViewGroup {
 	float distanceInfluenceForSnapDuration(float f) {
 		f -= 0.5f; // center the values about 0.
 		f *= 0.3f * Math.PI / 2.0f;
-		return (float) FloatMath.sin(f);
+		return (float) sin(f);
 	}
 
 	public int getDestScrollX(int page) {
