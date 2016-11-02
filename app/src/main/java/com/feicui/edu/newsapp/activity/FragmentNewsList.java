@@ -2,8 +2,6 @@ package com.feicui.edu.newsapp.activity;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -14,17 +12,25 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
 import com.feicui.edu.newsapp.NewsAppApplication;
 import com.feicui.edu.newsapp.R;
 import com.feicui.edu.newsapp.adapter.NewsListAdapter;
 import com.feicui.edu.newsapp.base.utils.ActivityUtils;
-import com.feicui.edu.newsapp.base.utils.NetUtils;
+import com.feicui.edu.newsapp.base.utils.LogUtils;
+import com.feicui.edu.newsapp.base.utils.ToastUtils;
+import com.feicui.edu.newsapp.biz.NewsManager;
 import com.feicui.edu.newsapp.biz.ParserNews;
 import com.feicui.edu.newsapp.db.DBHelper;
 import com.feicui.edu.newsapp.entity.BaseEntity;
 import com.feicui.edu.newsapp.entity.News;
+import com.loopj.android.http.TextHttpResponseHandler;
 
 import java.util.ArrayList;
+
+import cz.msebera.android.httpclient.Header;
 
 /**
  * Created by Administrator on 2016/11/1 0001.
@@ -36,10 +42,11 @@ public class FragmentNewsList extends Fragment {
     private DBHelper helper;
     private ProgressDialog dialog;
     private ActivityUtils activityUtils;
+    private ImageLoader imageLoader;
     //分页加载时需要记录的条目数
     private int startId;
     private int count = 9;
-    private Handler handler = new Handler(){
+    /*private Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -51,7 +58,7 @@ public class FragmentNewsList extends Fragment {
             //销毁进度条
             dialog.dismiss();
         }
-    };
+    };*/
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -68,6 +75,7 @@ public class FragmentNewsList extends Fragment {
         activityUtils = new ActivityUtils(this);
         adapter.setListView(listView);
         listView.setAdapter(adapter);
+
         //判断数据库中是否存在本地缓存文件
         if (helper.quaryNewsCount()) {
             quaryFromDB(startId);
@@ -120,10 +128,54 @@ public class FragmentNewsList extends Fragment {
         adapter.notifyDataSetChanged();
     }
 
+    /*private Response.Listener<String> listener =  new Response.Listener<String>(){
+        @Override
+        public void onResponse(String response) {
+            LogUtils.i("volley", response);
+            BaseEntity baseEntity = ParserNews.parserNewsWithGson(response);
+            datas = (ArrayList<News>) baseEntity.getData();
+            //将获取到的数据传递到适配器中
+            adapter.addDatas(datas, true);
+            //更新适配器，更新UI
+            adapter.notifyDataSetChanged();
+            helper.addNews(datas);
+            //销毁进度条
+            dialog.dismiss();
+        }
+    };
+    private Response.ErrorListener error =  new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            LogUtils.i("volley", error.getMessage());
+        }
+    };*/
+
+    class MyResponse extends TextHttpResponseHandler{
+
+        @Override
+        public void onFailure(int statusCode, Header[] headers, String response, Throwable throwable) {
+            BaseEntity baseEntity = ParserNews.parserNewsWithGson(response);
+            datas = (ArrayList<News>) baseEntity.getData();
+            //将获取到的数据传递到适配器中
+            adapter.addDatas(datas, true);
+            //更新适配器，更新UI
+            adapter.notifyDataSetChanged();
+            helper.addNews(datas);
+            //销毁进度条
+            dialog.dismiss();
+        }
+
+        @Override
+        public void onSuccess(int statusCode, Header[] headers, String responseString) {
+            LogUtils.i("MyResponse", responseString);
+            ToastUtils.show(getActivity(), "网络下载失败...", 0);
+        }
+    }
+
     private void downloadNews() {
         //先显示进度条
         dialog = ProgressDialog.show(getActivity(), null, "不要着急，请稍后...");
-        new Thread(){
+        /*new Thread(){
             @Override
             public void run() {
                 super.run();
@@ -139,7 +191,12 @@ public class FragmentNewsList extends Fragment {
                 //发送消息给Handler
                 handler.sendEmptyMessage(0);
             }
-        }.start();
+        }.start();*/
+
+//        NewsManager.getInstance().newsRequest(getActivity(), listener, error);
+        NewsManager.getInstance().newsRequest(getActivity(), new MyResponse());
+
+
 
 
         /*获取新闻数据DefaultHttpClient和HttpGet*/
@@ -193,8 +250,5 @@ public class FragmentNewsList extends Fragment {
 
             }
         });
-
     }
-
-
 }

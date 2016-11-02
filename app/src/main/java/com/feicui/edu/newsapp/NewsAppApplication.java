@@ -2,6 +2,10 @@ package com.feicui.edu.newsapp;
 
 import android.app.Application;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+
 import java.util.HashMap;
 
 /**
@@ -10,6 +14,19 @@ import java.util.HashMap;
 public class NewsAppApplication extends Application {
 
     private HashMap<String, Object> maps;
+    ImageLoader imageLoader = ImageLoader.getInstance();
+
+    DisplayImageOptions options = new DisplayImageOptions.Builder()
+            .cacheInMemory(true)
+            .cacheOnDisk(true)
+            .showImageForEmptyUri(R.drawable.cccc)
+            .showImageOnFail(R.drawable.img_cancel)
+//            .showImageOnLoading(R.drawable.)
+            .build();
+
+    ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext())
+
+            .build();
 
 //    存放数据
     public void addData(String key, Object object){

@@ -102,4 +102,33 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 break;
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        if (sm.isMenuShowing()){
+            sm.showContent();
+        }else {
+            doubleExit();
+        }
+    }
+
+    private boolean isExit = false;
+    private void doubleExit() {
+        if (!isExit){
+            isExit = true;
+            new Thread(){
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(2000);
+                        isExit = false;
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }.start();
+        }else {
+            finish();
+        }
+    }
 }

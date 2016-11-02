@@ -187,8 +187,6 @@ public class ImageLoader {
                 }
             }
         }
-
-
     }
 
     private void saveToLruCache(Bitmap bitmap, String url) {
