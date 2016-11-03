@@ -17,8 +17,6 @@ public abstract class MyBaseAdapter<T> extends BaseAdapter {
     public Context context;
     public LayoutInflater inflater;
 
-    public MyBaseAdapter() {
-    }
 
     public MyBaseAdapter(Context context) {
         infos = new ArrayList<T>();

@@ -11,10 +11,12 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.feicui.edu.newsapp.NewsAppApplication;
 import com.feicui.edu.newsapp.R;
 import com.feicui.edu.newsapp.adapter.NewsListAdapter;
+import com.feicui.edu.newsapp.adapter.NewsTypeAdapter;
 import com.feicui.edu.newsapp.base.utils.ActivityUtils;
 import com.feicui.edu.newsapp.base.utils.CommonUtils;
 import com.feicui.edu.newsapp.base.utils.LogUtils;
@@ -25,6 +27,7 @@ import com.feicui.edu.newsapp.db.DBHelper;
 import com.feicui.edu.newsapp.entity.BaseEntity;
 import com.feicui.edu.newsapp.entity.News;
 import com.feicui.edu.newsapp.entity.NewsGroup;
+import com.feicui.edu.newsapp.entity.NewsType;
 import com.feicui.edu.newsapp.view.HorizontalListView;
 import com.feicui.edu.newsapp.view.XListView;
 import com.loopj.android.http.ResponseHandlerInterface;
@@ -44,6 +47,7 @@ public class FragmentNewsList extends Fragment {
     private ArrayList<News> datas;
     private XListView listView;
     private HorizontalListView hListview;
+    private NewsTypeAdapter newsTypeAdapter;
     private NewsListAdapter adapter;
     private DBHelper helper;
     private ProgressDialog dialog;
@@ -80,15 +84,14 @@ public class FragmentNewsList extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        hListview = (HorizontalListView) view.findViewById(R.id.fragment_horizontal_list_view);
-        listView = (XListView) view.findViewById(R.id.news_list_lv);
-        listView.setPullRefreshEnable(true);
-        listView.setPullLoadEnable(true);
-        adapter = new NewsListAdapter(getActivity());
-        helper = new DBHelper(getActivity());
-        activityUtils = new ActivityUtils(this);
+        initView(view);
+
+        setListener();
+
         adapter.setListView(listView);
         listView.setAdapter(adapter);
+        hListview.setAdapter(newsTypeAdapter);
+
 
         //判断数据库中是否存在本地缓存文件，判断手机的网络连接是否正常
         if (helper.quaryNewsCount() || !CommonUtils.getInstance(getActivity()).isConnected()) {
@@ -98,6 +101,17 @@ public class FragmentNewsList extends Fragment {
 
         }
 
+    }
+
+    private void initView(View view) {
+        hListview = (HorizontalListView) view.findViewById(R.id.fragment_horizontal_list_view);
+        listView = (XListView) view.findViewById(R.id.news_list_lv);
+        listView.setPullRefreshEnable(true);
+        listView.setPullLoadEnable(true);
+        adapter = new NewsListAdapter(getActivity());
+        newsTypeAdapter = new NewsTypeAdapter(getActivity());
+        helper = new DBHelper(getActivity());
+        activityUtils = new ActivityUtils(this);
     }
 //        new Thread(){
 //            @Override
@@ -169,8 +183,9 @@ public class FragmentNewsList extends Fragment {
 
         @Override
         public void onFailure(int statusCode, Header[] headers, String response, Throwable throwable) {
-            LogUtils.i("MyResponse", response);
-            ToastUtils.show(getActivity(), "网络下载失败...", 0);
+//            LogUtils.i("MyResponse", response);
+            Toast.makeText(getActivity(), "网络下载失败...", Toast.LENGTH_SHORT).show();
+//            Toast.show(getActivity(), "网络下载失败...", 0);
 
 
         }
@@ -209,6 +224,13 @@ public class FragmentNewsList extends Fragment {
                     public void onSuccess(int statusCode, Header[] headers, String response) {
                         BaseEntity<NewsGroup> baseEntity = parserNewsGroupWithGson(response);
                         List<NewsGroup> newsGroups = baseEntity.getData();
+                        ArrayList<NewsType> newsTypes = new ArrayList<NewsType>();
+                        for (NewsGroup newsGroup : newsGroups) {
+                            newsTypes.addAll(newsGroup.getSubgrp());
+                        }
+                        newsTypeAdapter.addDatas(newsTypes, true);
+                        newsTypeAdapter.notifyDataSetChanged();
+
                         for (NewsGroup newsGroup : newsGroups) {
                             LogUtils.i("news", newsGroup.getGid() + "," + newsGroup.getSubgrp() + "," + newsGroup.getGroup());
                         }
@@ -241,14 +263,27 @@ public class FragmentNewsList extends Fragment {
         }.start();*/
 
 //        NewsManager.getInstance().newsRequest(getActivity(), listener, error);
-        NewsManager.getInstance().newsRequest(getActivity(), 1, mode, new MyResponse());
+        NewsManager.getInstance().newsRequest(getActivity(), subid, 1, mode, new MyResponse());
 
 
 
 
         /*获取新闻数据DefaultHttpClient和HttpGet*/
     }
+
+    private int subid = 1;
+
     public void setListener(){
+
+//        设置水平列表的item点击监听
+        hListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                NewsType newsType = newsTypeAdapter.getItem(position);
+                subid = newsType.getSubid();
+                downloadNewsWithRefresh();
+            }
+        });
 
         listView.setXListViewListener(new XListView.IXListViewListener() {
             @Override
@@ -327,6 +362,6 @@ public class FragmentNewsList extends Fragment {
         mode = REFRESH;
         //先显示进度条
         dialog = ProgressDialog.show(getActivity(), null, "不要着急，请稍后...");
-        NewsManager.getInstance().newsRequest(getActivity(), nid, mode, new MyResponse());
+        NewsManager.getInstance().newsRequest(getActivity(), subid, nid, mode, new MyResponse());
     }
 }

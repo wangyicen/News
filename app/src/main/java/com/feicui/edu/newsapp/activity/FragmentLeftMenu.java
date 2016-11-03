@@ -27,11 +27,11 @@ public class FragmentLeftMenu extends Fragment implements View.OnClickListener {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        layouts[0] = (RelativeLayout) view.findViewById(R.id.left_news);
-        layouts[1] = (RelativeLayout) view.findViewById(R.id.left_favorite);
-        layouts[2] = (RelativeLayout) view.findViewById(R.id.left_local);
-        layouts[3] = (RelativeLayout) view.findViewById(R.id.left_comment);
-        layouts[4] = (RelativeLayout) view.findViewById(R.id.left_photo);
+        layouts[0] = (RelativeLayout) view.findViewById(R.id.layout_news);
+        layouts[1] = (RelativeLayout) view.findViewById(R.id.layout_favorite);
+        layouts[2] = (RelativeLayout) view.findViewById(R.id.layout_local);
+        layouts[3] = (RelativeLayout) view.findViewById(R.id.layout_comment);
+        layouts[4] = (RelativeLayout) view.findViewById(R.id.layout_photo);
         for (int x = 0; x < layouts.length; x++) {
             layouts[x].setOnClickListener(this);
         }

@@ -1,15 +1,18 @@
 package com.feicui.edu.newsapp.demo;
 
+import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.feicui.edu.newsapp.R;
 
@@ -24,6 +27,7 @@ public class FragmentViewPagerActivity extends FragmentActivity {
     private ImageView iv;
     private int huaW;
     private int curPosition;
+    private TextView tv1, tv2, tv3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +45,10 @@ public class FragmentViewPagerActivity extends FragmentActivity {
         fragments.add(fragment3);
         adapter = new MyViewPagerAdapter(getSupportFragmentManager(), fragments);
         iv = (ImageView) findViewById(R.id.fragment_btn);
+
+        tv1 = (TextView) findViewById(R.id.tv1);
+        tv2 = (TextView) findViewById(R.id.tv2);
+        tv3 = (TextView) findViewById(R.id.tv3);
 
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -76,5 +84,21 @@ public class FragmentViewPagerActivity extends FragmentActivity {
 
         vp.setAdapter(adapter);
 
+    }
+
+
+    public void labelClick(View view){
+        switch (view.getId()){
+            case R.id.tv1:
+                tv1.setTextColor(Color.RED);
+                break;
+            case R.id.tv2:
+                tv2.setTextColor(Color.RED);
+                break;
+            case R.id.tv3:
+                tv3.setTextColor(Color.RED);
+                break;
+
+        }
     }
 }

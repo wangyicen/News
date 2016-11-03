@@ -29,7 +29,8 @@ public class DBHelper {
     public void addNews(ArrayList<News> datas){
         //打开数据库
         db = helper.getWritableDatabase();
-        for (News news : datas) {
+        for (int x = 0; x < datas.size(); x++) {
+            News news = datas.get(x);
             ContentValues cv = new ContentValues();
 //nid integer,title text,summary text,stamp text,icon text,link text,type text
             cv.put("nid", news.getNid());
@@ -40,7 +41,7 @@ public class DBHelper {
             cv.put("link", news.getLink());
             cv.put("type", news.getType());
 
-            db.insert(DBOpenHelper.TABLE_NAME, "link", cv);
+            db.insert(DBOpenHelper.TABLE_NAME, null, cv);
         }
         //关闭数据库
         db.close();

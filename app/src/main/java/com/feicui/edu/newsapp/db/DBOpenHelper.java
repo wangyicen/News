@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class DBOpenHelper extends SQLiteOpenHelper {
 
-    public static final String DB_NAME = "news.db";
+    public static final String DB_NAME = "newsdb.db";
     public static final String TABLE_NAME = "news";
     public static final int DB_VERSION = 1;
 
@@ -23,8 +23,8 @@ public class DBOpenHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table" + TABLE_NAME + "(_id integer primary key autoincrement," +
-                "nid integer,title text,summary text,stamp text,icon text,link text,type integer)");
+        db.execSQL("create table " + TABLE_NAME + "(_id integer primary key autoincrement," +
+                "nid integer,title text,summary text,icon text,link text,type integer,stamp text)");
     }
 
     @Override

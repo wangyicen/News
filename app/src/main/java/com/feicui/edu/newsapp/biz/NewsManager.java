@@ -28,7 +28,7 @@ public class NewsManager {
         return newsManager;
     }
 
-    public void newsRequest(Context context, int nid, int mode, ResponseHandlerInterface response){
+    public void newsRequest(Context context, int subid, int nid, int mode, ResponseHandlerInterface response){
 //      使用volley的方法
         //        创建请求序列
        /* RequestQueue queue = Volley.newRequestQueue(context);
@@ -43,7 +43,7 @@ public class NewsManager {
 //      使用AsyncHttpClient
         AsyncHttpClient client = new AsyncHttpClient();
         client.get(NetUtils.BASE_PATH + "news_list?ver="+ NetUtils.VERSION +
-                "&subid=1&dir="+ mode + "&nid=" + nid + "&stamp=20140321&cnt=20", response);
+                "&subid="+ subid +"&dir="+ mode + "&nid=" + nid + "&stamp=20140321&cnt=20", response);
     }
     public void newsTypeRequest(Context context, ResponseHandlerInterface response){
 //      使用volley的方法
