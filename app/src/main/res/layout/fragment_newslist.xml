@@ -6,11 +6,29 @@
     android:orientation="vertical"
     tools:context=".activity.FragmentNewsList">
 
-    <ListView
+    <RelativeLayout
+        android:id="@+id/rl_type"
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+
+        <com.feicui.edu.newsapp.view.HorizontalListView
+            android:id="@+id/fragment_horizontal_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <ImageView
+            android:id="@+id/iv_more_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/fragment_horizontal_list_view"
+            android:src="@drawable/drawable_more_type_selector"/>
+
+    </RelativeLayout>
+
+    <com.feicui.edu.newsapp.view.XListView
         android:id="@+id/news_list_lv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:cacheColorHint="@color/transparent"></ListView>
+        android:cacheColorHint="@color/transparent"/>
 
 
 </LinearLayout>

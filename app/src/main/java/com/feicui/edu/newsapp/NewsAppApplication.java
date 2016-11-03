@@ -14,9 +14,9 @@ import java.util.HashMap;
 public class NewsAppApplication extends Application {
 
     private HashMap<String, Object> maps;
-    ImageLoader imageLoader = ImageLoader.getInstance();
+//    ImageLoader imageLoader = ImageLoader.getInstance();
 
-    DisplayImageOptions options = new DisplayImageOptions.Builder()
+   /* DisplayImageOptions options = new DisplayImageOptions.Builder()
             .cacheInMemory(true)
             .cacheOnDisk(true)
             .showImageForEmptyUri(R.drawable.cccc)
@@ -26,7 +26,7 @@ public class NewsAppApplication extends Application {
 
     ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext())
 
-            .build();
+            .build();*/
 
 //    存放数据
     public void addData(String key, Object object){

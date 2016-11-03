@@ -10,7 +10,7 @@ import com.feicui.edu.newsapp.base.activity.BaseActivity;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
-    private SlidingMenu sm;
+    public static SlidingMenu sm;
     private ImageView left, right;
     private Fragment menuLeft, menuRight, newsList, reading;
 

@@ -4,6 +4,8 @@ import android.util.Log;
 
 import com.feicui.edu.newsapp.entity.BaseEntity;
 import com.feicui.edu.newsapp.entity.News;
+import com.feicui.edu.newsapp.entity.NewsGroup;
+import com.feicui.edu.newsapp.entity.NewsType;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -53,10 +55,17 @@ public class ParserNews {
     }
 
 //    使用高端的gson框架解析
-    public static BaseEntity parserNewsWithGson(String json){
+    public static BaseEntity<News> parserNewsWithGson(String json){
         Gson gson = new Gson();
         Type type = new TypeToken<BaseEntity>(){}.getType();
-        BaseEntity baseEntity = gson.fromJson(json,type);
+        BaseEntity<News> baseEntity = gson.fromJson(json,type);
+        return baseEntity;
+    }
+
+    public static BaseEntity<NewsGroup> parserNewsGroupWithGson(String json){
+        Gson gson = new Gson();
+        Type type = new TypeToken<BaseEntity<NewsGroup>>(){}.getType();
+        BaseEntity<NewsGroup> baseEntity = gson.fromJson(json, type);
         return baseEntity;
     }
 

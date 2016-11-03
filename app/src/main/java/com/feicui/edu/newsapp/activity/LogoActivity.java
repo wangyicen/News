@@ -29,7 +29,7 @@ public class LogoActivity extends BaseActivity {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                Intent intent = new Intent(LogoActivity.this, NewsList.class);
+                Intent intent = new Intent(LogoActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();
 

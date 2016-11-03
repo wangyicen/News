@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.feicui.edu.newsapp">
 
+    <!-- 手机通话权限 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_APN_SETTINGS"/>
+
     <!-- <instrumentation -->
     <!-- android:name="android.test.InstrumentationTestRunner" -->
     <!-- android:targetPackage="com.feicui.edu.newsapp"/> -->
@@ -19,21 +23,21 @@
         </activity>
         <activity android:name=".activity.NewsWebActivity" />
         <activity android:name=".activity.LeadActivity">
-            <!--<intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
-        </activity>
-        <activity android:name=".activity.LogoActivity" />
-        <activity android:name=".activity.MainActivity" />
-        <activity android:name=".demo.MyFragmentActivity" />
-        <activity android:name=".demo.FragmentViewPagerActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".activity.LogoActivity" />
+        <activity android:name=".activity.MainActivity" />
+        <activity android:name=".demo.MyFragmentActivity" />
+        <activity android:name=".demo.FragmentViewPagerActivity">
+            <!--<intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>-->
         </activity>
     </application>
 
